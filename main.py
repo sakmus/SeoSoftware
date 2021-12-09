@@ -63,13 +63,39 @@ try:
 
     else: print("Meta description is not available")
 
+  # Check image
+  def check_img(keyword, data):
+    imgs = 0
 
+    # Check for image tags
+    tags = data.find_all('img')
+    if tags:
+      print("+ Image is available in the page.")
+      # Iterate through image tags
+      for tag in tags:
+        if tag:
+          imgs += 1
+          alt = tag.get('alt')
+
+          # Check for alt texts
+          if alt:
+            print(f"+ alt text found in the image no. {imgs}")
+
+            # Check for alt text length
+            print(f"+ alt text is fit for image no. {imgs}" if len(alt) < 125 else f"- alt text is too long. Make it up to 125.")
+        
+            # Check for keyword in the alt text
+            print(f"+ Keyword in alt text in in the image no. {imgs}" if keyword in alt else f"- Keyword is not in the alt text in the image no. {imgs}")
+
+          else: print(f"- alt text not found in the image no. {imgs}")
+    else: print("- No image found in the page")
 
 
 
   # Recall the functions
   check_title(keyword, data)
   check_desc(keyword, data)
+  check_img(keyword, data)
 
 except:
   print("Failed to process the URL :(. The url might be broken.")
